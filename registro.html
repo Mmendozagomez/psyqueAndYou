@@ -28,17 +28,17 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Correo Electrónico</label>
-                            <input type="email" class="form-control" placeholder="nombre@email.com">
+                            <input type="email" class="form-control" id="emailUsuario" placeholder="nombre@email.com">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" placeholder="******">
+                            <input type="password" class="form-control" id="passUsuario"> placeholder="******">
                         </div>
 
                         <button class="btn btn-primary w-100 mt-3" onclick="irAlPaso2()">
                             Siguiente: Hacer Cuestionario
                         </button>
-                        <p class="text-center mt-3"><small>¿Ya tienes cuenta? <a href="#">Inicia sesión</a></small></p>
+                        <p class="text-center mt-3"><small>¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></small></p>
                     </div>
 
                     <div id="paso2" class="d-none">
@@ -94,68 +94,92 @@
         </div>
     </div>
 
-    <script>
-        // Funciones para moverse entre pantallas
+  <script type="module">
+    // 1. Importamos las herramientas REALES
+    import { auth, db } from './firebase-config.js';
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+    // Hacemos las funciones globales para que el HTML las encuentre
+    window.irAlPaso2 = function() {
+        let nombre = document.getElementById("nombreUsuario").value;
+        let email = document.getElementById("emailUsuario").value; // ¡Asegúrate de tener este input en el HTML!
+        let pass = document.getElementById("passUsuario").value;   // ¡Y este también!
+
+        if(nombre === "" || email === "" || pass === "") {
+            alert("Por favor llena todos los datos del paso 1");
+            return;
+        }
+
+        // Si hay datos, avanzamos visualmente
+        document.getElementById("paso1").classList.add("d-none");
+        document.getElementById("paso2").classList.remove("d-none");
+        document.getElementById("barraProgreso").style.width = "66%";
+    }
+
+    window.volverAlPaso1 = function() {
+        document.getElementById("paso2").classList.add("d-none");
+        document.getElementById("paso1").classList.remove("d-none");
+        document.getElementById("barraProgreso").style.width = "33%";
+    }
+
+    window.finalizarRegistro = async function() {
+        // Obtenemos los datos
+        const email = document.getElementById("emailUsuario").value;
+        const password = document.getElementById("passUsuario").value;
+        const nombre = document.getElementById("nombreUsuario").value;
+        const motivo = document.getElementById("motivoConsulta").value;
         
-        function irAlPaso2() {
-            // Validamos que haya puesto el nombre al menos
-            let nombre = document.getElementById("nombreUsuario").value;
-            if(nombre === "") {
-                alert("Por favor escribe tu nombre");
-                return;
+        // Validamos el motivo
+        if(motivo === "") { alert("Selecciona un motivo"); return; }
+
+        try {
+            // 🛑 AQUÍ OCURRE LA MAGIA: CREAMOS EL USUARIO EN GOOGLE
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            // Guardamos los datos extra (nombre, motivo) en la Base de Datos
+            await setDoc(doc(db, "pacientes", user.uid), {
+                nombre: nombre,
+                email: email,
+                motivo: motivo,
+                rol: "paciente",
+                fechaRegistro: new Date()
+            });
+
+            // Si todo sale bien, mostramos el éxito
+            mostrarExito(nombre, motivo);
+
+        } catch (error) {
+            // Si algo sale mal (ej: el correo ya existe)
+            console.error(error);
+            if (error.code === 'auth/email-already-in-use') {
+                alert("Este correo ya está registrado.");
+            } else if (error.code === 'auth/weak-password') {
+                alert("La contraseña debe tener al menos 6 caracteres.");
+            } else {
+                alert("Error: " + error.message);
             }
-
-            // Truco de magia: Ocultamos paso 1, Mostramos paso 2
-            document.getElementById("paso1").classList.add("d-none"); // Agrega clase ocultar
-            document.getElementById("paso2").classList.remove("d-none"); // Quita clase ocultar
-            
-            // Actualizamos la barra de progreso visual
-            document.getElementById("barraProgreso").style.width = "66%";
         }
+    }
 
-        function volverAlPaso1() {
-            document.getElementById("paso2").classList.add("d-none");
-            document.getElementById("paso1").classList.remove("d-none");
-            document.getElementById("barraProgreso").style.width = "33%";
-        }
+    function mostrarExito(nombre, motivo) {
+        // Lógica del Match (simplificada)
+        let match = "Dr. Asignado";
+        let especialidad = "General";
+        if (motivo === "ansiedad") { match = "Lic. Ana García"; especialidad = "Ansiedad"; }
+        else if (motivo === "pareja") { match = "Dr. Roberto Méndez"; especialidad = "Parejas"; }
+        
+        document.getElementById("saludoNombre").innerText = nombre;
+        document.getElementById("nombreMatch").innerText = match;
+        document.getElementById("especialidadMatch").innerText = especialidad;
 
-        function finalizarRegistro() {
-            // 1. Capturamos los datos del cuestionario
-            let motivo = document.getElementById("motivoConsulta").value;
-            let nombreUsuario = document.getElementById("nombreUsuario").value;
-            
-            if(motivo === "") {
-                alert("Selecciona un motivo de consulta");
-                return;
-            }
-
-            // 2. Lógica del Match (Igual que antes)
-            let match = "Dr. Asignado";
-            let especialidad = "General";
-
-            if (motivo === "ansiedad") {
-                match = "Lic. Ana García";
-                especialidad = "Especialista en Ansiedad";
-            } else if (motivo === "pareja") {
-                match = "Dr. Roberto Méndez";
-                especialidad = "Terapia de Parejas";
-            } else if (motivo === "infantil") {
-                match = "Lic. Sofía Ruiz";
-                especialidad = "Psicología Infantil";
-            }
-
-            // 3. Escribimos los datos en la pantalla final (Paso 3)
-            document.getElementById("saludoNombre").innerText = nombreUsuario;
-            document.getElementById("nombreMatch").innerText = match;
-            document.getElementById("especialidadMatch").innerText = especialidad;
-
-            // 4. Mostramos el Paso 3
-            document.getElementById("paso2").classList.add("d-none");
-            document.getElementById("paso3").classList.remove("d-none");
-            document.getElementById("barraProgreso").style.width = "100%";
-            document.getElementById("barraProgreso").classList.add("bg-success"); // Ponemos la barra verde
-        }
-    </script>
+        document.getElementById("paso2").classList.add("d-none");
+        document.getElementById("paso3").classList.remove("d-none");
+        document.getElementById("barraProgreso").style.width = "100%";
+        document.getElementById("barraProgreso").classList.add("bg-success");
+    }
+</script>
 
 </body>
 </html>
