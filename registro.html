@@ -93,7 +93,36 @@
             </div>
         </div>
     </div>
+<script>
+    // --- LÓGICA VISUAL (No depende de Google) ---
+    
+    function irAlPaso2() {
+        console.log("Avanzando al paso 2...");
+        
+        // 1. Validamos que haya escrito algo
+        let nombre = document.getElementById("nombreUsuario").value;
+        let email = document.getElementById("emailUsuario").value;
+        let pass = document.getElementById("passUsuario").value;
 
+        if(nombre === "" || email === "" || pass === "") {
+            alert("Por favor completa tu nombre, correo y contraseña.");
+            return;
+        }
+
+        // 2. Ocultamos Paso 1 y Mostramos Paso 2
+        document.getElementById("paso1").classList.add("d-none");
+        document.getElementById("paso2").classList.remove("d-none");
+        
+        // 3. Movemos la barra de progreso
+        document.getElementById("barraProgreso").style.width = "66%";
+    }
+
+    function volverAlPaso1() {
+        document.getElementById("paso2").classList.add("d-none");
+        document.getElementById("paso1").classList.remove("d-none");
+        document.getElementById("barraProgreso").style.width = "33%";
+    }
+</script>
 <script type="module">
     import { auth, db } from './firebase-config.js';
     import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
