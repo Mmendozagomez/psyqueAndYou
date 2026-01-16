@@ -39,7 +39,7 @@ body {
 
 /* --- HERO SECTION (La portada) --- */
 .hero-section {
-    background: url('assets/side-view-young-girl-talking-therapist\ \(1\).jpg');
+    background-image: url('assets/side-view-young-girl-talking-therapist\ \(1\).jpg');
     background-size: cover;
     background-position: center;
     min-height: 80vh; /* Ocupa el 80% de la altura de la pantalla */
