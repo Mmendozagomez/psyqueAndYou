@@ -122,6 +122,42 @@
         document.getElementById("paso1").classList.remove("d-none");
         document.getElementById("barraProgreso").style.width = "33%";
     }
+            function finalizarRegistro() {
+            // 1. Capturamos los datos del cuestionario
+            let motivo = document.getElementById("motivoConsulta").value;
+            let nombreUsuario = document.getElementById("nombreUsuario").value;
+            
+            if(motivo === "") {
+                alert("Selecciona un motivo de consulta");
+                return;
+            }
+
+            // 2. Lógica del Match (Igual que antes)
+            let match = "Dr. Asignado";
+            let especialidad = "General";
+
+            if (motivo === "ansiedad") {
+                match = "Lic. Ana García";
+                especialidad = "Especialista en Ansiedad";
+            } else if (motivo === "pareja") {
+                match = "Dr. Roberto Méndez";
+                especialidad = "Terapia de Parejas";
+            } else if (motivo === "infantil") {
+                match = "Lic. Sofía Ruiz";
+                especialidad = "Psicología Infantil";
+            }
+
+            // 3. Escribimos los datos en la pantalla final (Paso 3)
+            document.getElementById("saludoNombre").innerText = nombreUsuario;
+            document.getElementById("nombreMatch").innerText = match;
+            document.getElementById("especialidadMatch").innerText = especialidad;
+
+            // 4. Mostramos el Paso 3
+            document.getElementById("paso2").classList.add("d-none");
+            document.getElementById("paso3").classList.remove("d-none");
+            document.getElementById("barraProgreso").style.width = "100%";
+            document.getElementById("barraProgreso").classList.add("bg-success"); // Ponemos la barra verde
+        }
 </script>
 <script type="module">
     import { auth, db } from './firebase-config.js';
