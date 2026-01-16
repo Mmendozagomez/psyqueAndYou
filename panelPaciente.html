@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Bienestar - TuClinica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#">TuClinica</a>
+            <div class="d-flex align-items-center">
+                <span class="me-3 text-muted">Hola, María</span>
+                <a href="index.html" class="btn btn-outline-danger btn-sm">Salir</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        
+        <div class="card border-0 shadow-sm mb-5 overflow-hidden">
+            <div class="card-body p-0">
+                <div class="row g-0">
+                    <div class="col-md-8 p-4">
+                        <h5 class="text-muted text-uppercase small fw-bold mb-2">Tu próxima sesión es:</h5>
+                        <h2 class="fw-bold text-primary mb-3">Hoy, 3:00 PM</h2>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="bg-light rounded-circle p-2 me-3">
+                                <i class="bi bi-person-heart fs-4 text-primary"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-0">Dr. Roberto Méndez</h5>
+                                <small class="text-muted">Terapia de Pareja</small>
+                            </div>
+                        </div>
+                        <a href="salaVideo.html" class="btn btn-success btn-lg px-4 shadow-sm">
+                            <i class="bi bi-camera-video-fill me-2"></i> Unirme a la Videollamada
+                        </a>
+                        <p class="small text-muted mt-2"><i class="bi bi-info-circle"></i> El botón se activará 5 min antes.</p>
+                    </div>
+                    <div class="col-md-4 bg-primary text-white p-4 d-flex align-items-center justify-content-center">
+                        <div class="text-center">
+                            <i class="bi bi-chat-quote fs-1 mb-3"></i>
+                            <p class="fst-italic">"El primer paso para sanar es ser escuchado."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h4 class="mb-3">Historial de Sesiones</h4>
+                <div class="card border-0 shadow-sm">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <div>
+                                <span class="fw-bold d-block">10 Enero 2024</span>
+                                <small class="text-muted">Dr. Méndez</small>
+                            </div>
+                            <span class="badge bg-secondary">Completada</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                            <div>
+                                <span class="fw-bold d-block">02 Enero 2024</span>
+                                <small class="text-muted">Evaluación Inicial</small>
+                            </div>
+                            <span class="badge bg-secondary">Completada</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h4 class="mb-3">¿Qué necesitas?</h4>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="card border-0 shadow-sm text-center p-3 h-100">
+                            <i class="bi bi-calendar-plus fs-1 text-primary mb-2"></i>
+                            <h6>Agendar Nueva Cita</h6>
+                            <a href="cuestionario.html" class="stretched-link"></a>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card border-0 shadow-sm text-center p-3 h-100">
+                            <i class="bi bi-receipt fs-1 text-success mb-2"></i>
+                            <h6>Mis Facturas</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+/* --- CONFIGURACIÓN DE MARCA --- */
+:root {
+    /* Cambia estos códigos HEX por los colores de tu marca */
+    --color-primario: #2F4157; /* Un morado tipo "psicología" */
+    --color-secundario: #bf7dc9; /* Un lila muy suave para fondos */
+    --color-texto: #333333;
+}
+
+/* --- ESTILOS GENERALES --- */
+body {
+    font-family: 'Lato', sans-serif; /* Puedes importar Google Fonts aquí */
+    color: var(--color-texto);
+}
+
+/* Sobrescribir el color primario de Bootstrap */
+.text-primary {
+    color: var(--color-primario) !important;
+}
+
+.btn-primary {
+    background-color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+
+.btn-primary:hover {
+    background-color: #4a148c; /* Un tono más oscuro para el hover */
+    border-color: #4a148c;
+}
+
+.btn-outline-primary {
+    color: var(--color-primario);
+    border-color: var(--color-primario);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--color-primario);
+    color: white;
+}
+
+/* --- HERO SECTION (La portada) --- */
+.hero-section {
+    background: url('assets/side-view-young-girl-talking-therapist\ \(1\).jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 80vh; /* Ocupa el 80% de la altura de la pantalla */
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 60vh;
+    }
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+/* =========================================
+   ESTILOS ESPECÍFICOS DE LA SALA DE VIDEO
+   ========================================= */
+
+/* Solo aplicamos el fondo oscuro si el body tiene esta clase */
+body.sala-video-page {
+    background-color: #202124; /* Fondo oscuro tipo Google Meet */
+    height: 100vh;
+    overflow: hidden; /* Evita barras de scroll */
+}
+
+/* 1. EL VIDEO PRINCIPAL */
+.video-principal {
+    width: 100%;
+    height: 90vh; /* Ocupa el 90% de la altura visible */
+    object-fit: cover;
+    border-radius: 15px;
+    opacity: 0.9;
+}
+
+/* 2. TU VIDEO FLOTANTE (PIP) */
+.mi-video {
+    position: absolute;
+    bottom: 100px;
+    right: 30px;
+    width: 200px;
+    height: 150px;
+    background-color: #333;
+    border-radius: 10px;
+    border: 2px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    background-image: url('https://source.unsplash.com/300x200/?doctor,selfie');
+    background-size: cover;
+    z-index: 10; /* Asegura que esté por encima del video grande */
+}
+
+/* 3. BARRA DE CONTROLES FLOTANTE */
+.controles {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Centrado horizontal perfecto */
+    background: rgba(0,0,0,0.6);
+    padding: 15px 30px;
+    border-radius: 50px;
+    display: flex;
+    gap: 20px;
+    z-index: 20;
+}
+
+/* BOTONES REDONDOS */
+.btn-control {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Colores de los botones */
+.btn-colgar {
+    background-color: #ea4335;
+    color: white;
+    width: 70px;
+    border-radius: 30px;
+}
+.btn-colgar:hover { background-color: #d93025; }
+
+.btn-gris {
+    background-color: #3c4043;
+    color: white;
+}
+.btn-gris:hover { background-color: #5f6368; transform: scale(1.1); }
+
+/* Estado Muteado */
+.btn-mute {
+    background-color: #ea4335 !important;
+    color: white;
+}
+
+/* Animación del puntito rojo de "GRABANDO" */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* AJUSTES PARA MÓVIL (RESPONSIVE) */
+@media (max-width: 768px) {
+    .mi-video {
+        width: 120px;
+        height: 90px;
+        bottom: 90px;
+        right: 15px;
+    }
+    .controles {
+        padding: 10px 20px;
+        bottom: 15px;
+        width: 90%; /* Que ocupe casi todo el ancho */
+        justify-content: space-around;
+    }
+}

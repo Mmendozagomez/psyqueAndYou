@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>En Sesión - TuClinica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="sala-video-page">
+
+    <div class="container-fluid p-3 h-100 position-relative">
+        
+        <div class="position-absolute top-0 start-0 m-4 text-white z-3">
+            <span class="badge bg-danger animate-pulse">● GRABANDO</span>
+            <span class="ms-2 fw-bold">14:32</span>
+        </div>
+
+        <img src="https://source.unsplash.com/1600x900/?woman,talking" class="video-principal shadow">
+
+        <div class="mi-video">
+            <span class="badge bg-dark position-absolute bottom-0 start-0 m-2">Tú</span>
+        </div>
+
+        <div class="controles shadow-lg">
+            <button class="btn-control btn-gris" onclick="toggleMicrofono(this)">
+                <i class="bi bi-mic-fill"></i>
+            </button>
+            <button class="btn-control btn-gris">
+                <i class="bi bi-camera-video-fill"></i>
+            </button>
+            <button class="btn-control btn-gris position-relative">
+                <i class="bi bi-chat-left-text"></i>
+                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+            </button>
+            <a href="panelPsicologo.html" class="btn-control btn-colgar text-decoration-none">
+                <i class="bi bi-telephone-x-fill"></i>
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        let microfonoActivo = true;
+        function toggleMicrofono(boton) {
+            if (microfonoActivo) {
+                boton.classList.remove('btn-gris');
+                boton.classList.add('btn-mute');
+                boton.innerHTML = '<i class="bi bi-mic-mute-fill"></i>';
+                microfonoActivo = false;
+            } else {
+                boton.classList.add('btn-gris');
+                boton.classList.remove('btn-mute');
+                boton.innerHTML = '<i class="bi bi-mic-fill"></i>';
+                microfonoActivo = true;
+            }
+        }
+    </script>
+</body>
+</html>

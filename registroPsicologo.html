@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Únete al Equipo - TuClinica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow border-0">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-5">
+                            <h2 class="fw-bold text-primary">Postulación Profesional</h2>
+                            <p class="text-muted">Únete a la red de psicólogos más grande del país.</p>
+                        </div>
+
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Nombre Completo</label>
+                                    <input type="text" class="form-control" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Especialidad Principal</label>
+                                    <select class="form-select">
+                                        <option>Psicología Clínica</option>
+                                        <option>Terapia de Pareja</option>
+                                        <option>Psicología Infantil</option>
+                                        <option>Neuropsicología</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Nº Colegiado (FPV)</label>
+                                    <input type="text" class="form-control" placeholder="Ej. 12345-LA" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">País de Residencia</label>
+                                    <select class="form-select">
+                                        <option>Venezuela</option>
+                                        <option>España</option>
+                                        <option>México</option>
+                                        <option>Argentina</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label fw-bold mt-3">Documentación</label>
+                                    <div class="border rounded p-3 bg-white">
+                                        <label class="form-label small text-muted">Sube tu Título y Cédula/DNI (PDF)</label>
+                                        <input type="file" class="form-control" accept=".pdf,.jpg">
+                                        <input type="file" class="form-control" accept=".pdf,.jpg">
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="button" class="btn btn-primary w-100 btn-lg" onclick="enviarSolicitud()">Enviar Solicitud</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function enviarSolicitud() {
+            // Simulamos el envío
+            alert("¡Solicitud Enviada! \n\nTu perfil está en revisión por el Administrador. Recibirás un correo cuando seas aprobado.");
+            // Lo mandamos al inicio
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

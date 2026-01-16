@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuentra tu Psicólogo - TuClinica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar navbar-light bg-white shadow-sm mb-5">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="bi bi-arrow-left"></i> Volver al Inicio
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                
+                <div class="card shadow-lg border-0 rounded-3">
+                    <div class="card-body p-5">
+                        <h2 class="text-center mb-4 fw-bold text-primary">Vamos a encontrar a tu terapeuta</h2>
+                        <p class="text-center text-muted mb-4">Responde estas dos preguntas para conectarte con el especialista adecuado.</p>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">1. ¿Qué te trae por aquí?</label>
+                            <select class="form-select form-select-lg" id="motivoConsulta">
+                                <option value="">Selecciona una opción...</option>
+                                <option value="ansiedad">Siento mucha ansiedad o estrés</option>
+                                <option value="pareja">Tengo problemas con mi pareja</option>
+                                <option value="infantil">Busco ayuda para mi hijo/a</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">2. Preferencia de género del terapeuta</label>
+                            <select class="form-select form-select-lg" id="preferenciaGenero">
+                                <option value="indiferente">No tengo preferencia</option>
+                                <option value="mujer">Prefiero una mujer</option>
+                                <option value="hombre">Prefiero un hombre</option>
+                            </select>
+                        </div>
+
+                        <button class="btn btn-primary w-100 btn-lg" onclick="buscarPsicologo()">
+                            Ver Mis Resultados
+                        </button>
+
+                        <div id="resultadoMatch" class="mt-4 d-none bg-light p-3 rounded border">
+                            <h5 class="text-success">¡Coincidencia Encontrada!</h5>
+                            <hr>
+                            <h4 id="nombrePsicologo" class="text-primary mb-1">Nombre</h4>
+                            <p id="especialidadPsicologo" class="small text-muted mb-3">Especialidad</p>
+                            <button class="btn btn-success w-100">Agendar Cita con este Especialista</button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function buscarPsicologo() {
+            let motivo = document.getElementById("motivoConsulta").value;
+            let genero = document.getElementById("preferenciaGenero").value;
+            
+            let nombreRecomendado = "";
+            let especialidadRecomendada = "";
+
+            if (motivo === "") {
+                alert("Por favor selecciona un motivo");
+                return;
+            }
+
+            if (motivo === "ansiedad") {
+                nombreRecomendado = "Lic. Ana García";
+                especialidadRecomendada = "Experta en Ansiedad";
+            } else if (motivo === "pareja") {
+                nombreRecomendado = "Dr. Roberto Méndez";
+                especialidadRecomendada = "Terapia de Parejas";
+            } else if (motivo === "infantil") {
+                nombreRecomendado = "Lic. Sofía Ruiz";
+                especialidadRecomendada = "Psicología Infantil";
+            }
+
+            // Lógica de género simple
+            if (genero === "hombre" && motivo === "ansiedad") {
+                nombreRecomendado = "Lic. Carlos López";
+            }
+
+            document.getElementById("nombrePsicologo").innerText = nombreRecomendado;
+            document.getElementById("especialidadPsicologo").innerText = especialidadRecomendada;
+            
+            document.getElementById("resultadoMatch").classList.remove("d-none");
+        }
+    </script>
+
+</body>
+</html>

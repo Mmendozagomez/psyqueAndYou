@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regístrate y Encuentra tu Psicólogo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"> </head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                
+                <div class="progress mb-4" style="height: 5px;">
+                    <div class="progress-bar" id="barraProgreso" role="progressbar" style="width: 33%;"></div>
+                </div>
+
+                <div class="card shadow border-0 p-4">
+                    
+                    <div id="paso1">
+                        <h3 class="text-primary fw-bold text-center">Crear Cuenta</h3>
+                        <p class="text-center text-muted">Primero, tus datos para guardar tu expediente.</p>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Nombre Completo</label>
+                            <input type="text" class="form-control" id="nombreUsuario" placeholder="Ej. María Pérez">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Correo Electrónico</label>
+                            <input type="email" class="form-control" placeholder="nombre@email.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contraseña</label>
+                            <input type="password" class="form-control" placeholder="******">
+                        </div>
+
+                        <button class="btn btn-primary w-100 mt-3" onclick="irAlPaso2()">
+                            Siguiente: Hacer Cuestionario
+                        </button>
+                        <p class="text-center mt-3"><small>¿Ya tienes cuenta? <a href="#">Inicia sesión</a></small></p>
+                    </div>
+
+                    <div id="paso2" class="d-none">
+                        <h3 class="text-primary fw-bold text-center">Cuéntanos sobre ti</h3>
+                        <p class="text-center text-muted">Para asignarte al mejor especialista.</p>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">¿Motivo de consulta?</label>
+                            <select class="form-select" id="motivoConsulta">
+                                <option value="">Selecciona...</option>
+                                <option value="ansiedad">Ansiedad / Estrés</option>
+                                <option value="pareja">Problemas de Pareja</option>
+                                <option value="infantil">Niños / Adolescentes</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Preferencia de Terapeuta</label>
+                            <select class="form-select" id="preferenciaGenero">
+                                <option value="indiferente">Indiferente</option>
+                                <option value="mujer">Mujer</option>
+                                <option value="hombre">Hombre</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-outline-secondary" onclick="volverAlPaso1()">Atrás</button>
+                            <button class="btn btn-primary" onclick="finalizarRegistro()">Ver mi Psicólogo</button>
+                        </div>
+                    </div>
+
+                    <div id="paso3" class="d-none text-center">
+                        <div class="text-success mb-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                            </svg>
+                        </div>
+                        <h3 class="fw-bold">¡Cuenta Creada!</h3>
+                        <p>Hola <span id="saludoNombre" class="fw-bold"></span>, hemos encontrado tu match ideal:</p>
+                        
+                        <div class="card bg-light p-3 mt-3 border-primary">
+                            <h4 class="text-primary mb-0" id="nombreMatch">Nombre Dr.</h4>
+                            <small class="text-muted" id="especialidadMatch">Especialidad</small>
+                        </div>
+
+                        <button class="btn btn-success w-100 btn-lg mt-4" onclick="window.location.href='panel-paciente.html'">
+                        Agendar mi primera cita
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funciones para moverse entre pantallas
+        
+        function irAlPaso2() {
+            // Validamos que haya puesto el nombre al menos
+            let nombre = document.getElementById("nombreUsuario").value;
+            if(nombre === "") {
+                alert("Por favor escribe tu nombre");
+                return;
+            }
+
+            // Truco de magia: Ocultamos paso 1, Mostramos paso 2
+            document.getElementById("paso1").classList.add("d-none"); // Agrega clase ocultar
+            document.getElementById("paso2").classList.remove("d-none"); // Quita clase ocultar
+            
+            // Actualizamos la barra de progreso visual
+            document.getElementById("barraProgreso").style.width = "66%";
+        }
+
+        function volverAlPaso1() {
+            document.getElementById("paso2").classList.add("d-none");
+            document.getElementById("paso1").classList.remove("d-none");
+            document.getElementById("barraProgreso").style.width = "33%";
+        }
+
+        function finalizarRegistro() {
+            // 1. Capturamos los datos del cuestionario
+            let motivo = document.getElementById("motivoConsulta").value;
+            let nombreUsuario = document.getElementById("nombreUsuario").value;
+            
+            if(motivo === "") {
+                alert("Selecciona un motivo de consulta");
+                return;
+            }
+
+            // 2. Lógica del Match (Igual que antes)
+            let match = "Dr. Asignado";
+            let especialidad = "General";
+
+            if (motivo === "ansiedad") {
+                match = "Lic. Ana García";
+                especialidad = "Especialista en Ansiedad";
+            } else if (motivo === "pareja") {
+                match = "Dr. Roberto Méndez";
+                especialidad = "Terapia de Parejas";
+            } else if (motivo === "infantil") {
+                match = "Lic. Sofía Ruiz";
+                especialidad = "Psicología Infantil";
+            }
+
+            // 3. Escribimos los datos en la pantalla final (Paso 3)
+            document.getElementById("saludoNombre").innerText = nombreUsuario;
+            document.getElementById("nombreMatch").innerText = match;
+            document.getElementById("especialidadMatch").innerText = especialidad;
+
+            // 4. Mostramos el Paso 3
+            document.getElementById("paso2").classList.add("d-none");
+            document.getElementById("paso3").classList.remove("d-none");
+            document.getElementById("barraProgreso").style.width = "100%";
+            document.getElementById("barraProgreso").classList.add("bg-success"); // Ponemos la barra verde
+        }
+    </script>
+
+</body>
+</html>
