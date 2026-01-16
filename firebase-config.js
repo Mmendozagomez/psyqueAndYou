@@ -1,6 +1,7 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// 1. Importamos las herramientas de la nube
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,8 +17,12 @@ const firebaseConfig = {
   measurementId: "G-LS5Q58E3LC"
 };
 
-// Initialize Firebase
+// 3. Inicializamos la app (ESTA ES LA PARTE QUE TE FALTABA O FALLABA)
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-// Exportamos para usarlos en otros archivos
+
+// Definimos las variables antes de exportarlas
+const auth = getAuth(app);      // <--- Aquí nace 'auth'
+const db = getFirestore(app);   // <--- Aquí nace 'db'
+
+// 4. Exportamos para que registro.html las pueda usar
 export { auth, db };
