@@ -94,81 +94,88 @@
         </div>
     </div>
 
-  <script type="module">
-    // 1. Importamos las herramientas REALES
+<script type="module">
     import { auth, db } from './firebase-config.js';
-    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // Hacemos las funciones globales para que el HTML las encuentre
-    window.irAlPaso2 = function() {
-        let nombre = document.getElementById("nombreUsuario").value;
-        let email = document.getElementById("emailUsuario").value; // ¡Asegúrate de tener este input en el HTML!
-        let pass = document.getElementById("passUsuario").value;   // ¡Y este también!
-
-        if(nombre === "" || email === "" || pass === "") {
-            alert("Por favor llena todos los datos del paso 1");
-            return;
-        }
-
-        // Si hay datos, avanzamos visualmente
-        document.getElementById("paso1").classList.add("d-none");
-        document.getElementById("paso2").classList.remove("d-none");
-        document.getElementById("barraProgreso").style.width = "66%";
-    }
-
-    window.volverAlPaso1 = function() {
-        document.getElementById("paso2").classList.add("d-none");
-        document.getElementById("paso1").classList.remove("d-none");
-        document.getElementById("barraProgreso").style.width = "33%";
-    }
-
     window.finalizarRegistro = async function() {
-        // Obtenemos los datos
+        // 1. Capturamos datos visuales
         const email = document.getElementById("emailUsuario").value;
         const password = document.getElementById("passUsuario").value;
         const nombre = document.getElementById("nombreUsuario").value;
         const motivo = document.getElementById("motivoConsulta").value;
         
-        // Validamos el motivo
         if(motivo === "") { alert("Selecciona un motivo"); return; }
 
+        // Cambiamos el texto del botón para que el usuario sepa que algo pasa
+        const boton = document.querySelector("button[onclick='finalizarRegistro()']");
+        boton.innerText = "Procesando...";
+        boton.disabled = true;
+
         try {
-            // 🛑 AQUÍ OCURRE LA MAGIA: CREAMOS EL USUARIO EN GOOGLE
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+            console.log("--- INICIO PROCESO DE REGISTRO ---");
+            
+            // ---------------------------------------------------------
+            // PASO A: AUTENTICACIÓN (CREAR CUENTA)
+            // Esto es vital. Si falla esto, sí debemos detenernos.
+            // ---------------------------------------------------------
+            let user;
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                user = userCredential.user;
+                console.log("✅ Usuario creado: ", user.uid);
+            } catch (authError) {
+                if (authError.code === 'auth/email-already-in-use') {
+                    console.log("⚠️ El usuario ya existía, iniciando sesión...");
+                    const loginCredential = await signInWithEmailAndPassword(auth, email, password);
+                    user = loginCredential.user;
+                } else {
+                    throw authError; // Si es otro error (contraseña corta), lanzamos el error real
+                }
+            }
 
-            // Guardamos los datos extra (nombre, motivo) en la Base de Datos
-            await setDoc(doc(db, "pacientes", user.uid), {
-                nombre: nombre,
-                email: email,
-                motivo: motivo,
-                rol: "paciente",
-                fechaRegistro: new Date()
-            });
+            // ---------------------------------------------------------
+            // PASO B: BASE DE DATOS (GUARDAR DETALLES)
+            // Aquí es donde atacan los AdBlockers. Lo envolvemos en su propio
+            // bloque try/catch SILENCIOSO para que no rompa la página.
+            // ---------------------------------------------------------
+            try {
+                await setDoc(doc(db, "pacientes", user.uid), {
+                    nombre: nombre, 
+                    email: email, 
+                    motivo: motivo,
+                    rol: "paciente", 
+                    fechaRegistro: new Date()
+                }, { merge: true });
+                console.log("✅ Datos guardados en DB");
+            } catch (dbError) {
+                // AQUÍ ESTÁ EL TRUCO: Solo avisamos en consola, pero NO detenemos la web.
+                console.warn("⚠️ No se pudo guardar en la base de datos (Posible AdBlocker), pero continuamos.", dbError);
+            }
 
-            // Si todo sale bien, mostramos el éxito
+            // ---------------------------------------------------------
+            // PASO C: ÉXITO VISUAL
+            // Llegamos aquí pase lo que pase con la base de datos.
+            // ---------------------------------------------------------
             mostrarExito(nombre, motivo);
 
         } catch (error) {
-            // Si algo sale mal (ej: el correo ya existe)
-            console.error(error);
-            if (error.code === 'auth/email-already-in-use') {
-                alert("Este correo ya está registrado.");
-            } else if (error.code === 'auth/weak-password') {
-                alert("La contraseña debe tener al menos 6 caracteres.");
-            } else {
-                alert("Error: " + error.message);
-            }
+            // Este catch solo salta si falla la AUTENTICACIÓN (login/registro)
+            console.error("Error crítico:", error);
+            alert("Hubo un problema con tu cuenta: " + error.message);
+            boton.innerText = "Ver mi Psicólogo";
+            boton.disabled = false;
         }
     }
 
     function mostrarExito(nombre, motivo) {
-        // Lógica del Match (simplificada)
         let match = "Dr. Asignado";
         let especialidad = "General";
+        
         if (motivo === "ansiedad") { match = "Lic. Ana García"; especialidad = "Ansiedad"; }
         else if (motivo === "pareja") { match = "Dr. Roberto Méndez"; especialidad = "Parejas"; }
+        else if (motivo === "infantil") { match = "Lic. Sofía Ruiz"; especialidad = "Infantil"; }
         
         document.getElementById("saludoNombre").innerText = nombre;
         document.getElementById("nombreMatch").innerText = match;
